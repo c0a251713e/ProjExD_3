@@ -28,11 +28,12 @@ def check_bound(obj_rct: pg.Rect) -> tuple[bool, bool]:
 class Score:
     def __init__(self, score):
         self.fonto = pg.font.Font(None, 50)
+        score = 0
         self.img = self.fonto.render(f"Score:{score}", True, (0, 0, 255)) 
         
-    def update(self, score):
+    def update(self, score, screen):
         self.img = self.fonto.render(f"Score:{score}", True, (0, 0, 255)) 
-        screen = pg.display.set_mode((WIDTH, HEIGHT))
+        # screen = pg.display.set_mode((WIDTH, HEIGHT))
         screen.blit(self.img, (100, 50))
 
 class Bird:
@@ -190,12 +191,11 @@ def main():
                     bomb = None
                     bird.change_img(6, screen) #喜びエフェクト
                     score += 1
-                    show_score = Score(score)
-                    show_score.update(score)
-                    pg.display.update
+                    pg.display.update()
         bombs = [bomb for bomb in bombs if bomb is not None]  # Noneを取り除く
         key_lst = pg.key.get_pressed()
         bird.update(key_lst, screen)
+        show_score.update(score, screen)
         if beam is not None:
             beam.update(screen) 
         for bomb in bombs:
