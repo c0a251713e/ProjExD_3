@@ -175,17 +175,18 @@ def main():
 
         for i, bomb in enumerate(bombs):
             for j, beam in enumerate(beams):
-                if beam is not None:
+                if beam is not None and bomb is not None:
                     if beam.rct.colliderect(bomb.rct): #ビームと爆弾の衝突判定
                         beams[j] = None
                         bombs[i] = None
                         bird.change_img(6, screen) #喜びエフェクト
                     pg.display.update
+
         bombs = [bomb for bomb in bombs if bomb is not None]  # Noneを取り除く
         beams = [beam for beam in beams if beam is not None]
         key_lst = pg.key.get_pressed()
         bird.update(key_lst, screen)
-        if beam is not None:
+        for beam in beams:
             beam.update(screen) 
         for bomb in bombs:
             bomb.update(screen)
