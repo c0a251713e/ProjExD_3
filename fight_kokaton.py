@@ -25,6 +25,16 @@ def check_bound(obj_rct: pg.Rect) -> tuple[bool, bool]:
     return yoko, tate
 
 
+class Score:
+    def __init__(self, score):
+        self.fonto = pg.font.Font(None, 50)
+        self.img = self.fonto.render(f"Score:{score}", True, (0, 0, 255)) 
+        
+    def update(self, score):
+        self.img = self.fonto.render(f"Score:{score}", True, (0, 0, 255)) 
+        screen = pg.display.set_mode((WIDTH, HEIGHT))
+        screen.blit(self.img, (100, 50))
+
 class Bird:
     """
     ゲームキャラクター（こうかとん）に関するクラス
@@ -145,6 +155,8 @@ def main():
     pg.display.set_caption("たたかえ！こうかとん")
     screen = pg.display.set_mode((WIDTH, HEIGHT))    
     bg_img = pg.image.load("fig/pg_bg.jpg")
+    score = 0
+    show_score =  Score(score)
     bird = Bird((300, 200))
     #bomb = Bomb((255, 0, 0), 10)
     bombs = [Bomb((255, 0, 0), 10) for _ in range(NUM_OF_BOMBS)]
@@ -177,6 +189,9 @@ def main():
                     beam = None
                     bomb = None
                     bird.change_img(6, screen) #喜びエフェクト
+                    score += 1
+                    show_score = Score(score)
+                    show_score.update(score)
                     pg.display.update
         bombs = [bomb for bomb in bombs if bomb is not None]  # Noneを取り除く
         key_lst = pg.key.get_pressed()
